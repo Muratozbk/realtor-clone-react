@@ -22,7 +22,7 @@ export default function SignIn() {
 
     return (
         <section>
-            <h1 className='text-3xl text-center mt-6 font-bold'>Sign In</h1>
+            <h1 className='text-3xl text-center mt-5 font-bold'>Sign In</h1>
             <div className='flex flex-wrap justify-center
             items-center px-6 py-12 max-w-6xl mx-auto'>
                 <div className='md:w-[67%] lg:w-[50%]
