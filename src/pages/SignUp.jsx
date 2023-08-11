@@ -40,6 +40,7 @@ export default function SignUp() {
             updateProfile(auth.currentUser, {
                 displayName: name
             })
+
             const user = userCredential.user;
             const formDataCopy = { ...formData }
             delete formDataCopy.password
