@@ -27,7 +27,8 @@ export default function SignIn() {
         e.preventDefault()
         try {
             const auth = getAuth()
-            const userCredentials = await signInWithEmailAndPassword(auth,
+            const userCredentials = await signInWithEmailAndPassword(
+                auth,
                 email,
                 password)
             if (userCredentials.user) {
