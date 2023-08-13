@@ -31,7 +31,7 @@ export default function Profile() {
         try {
             if (auth.currentUser.displayName !== name) {
                 await updateProfile(auth.currentUser, {
-                    displayName: name
+                    displayName: name,
                 });
                 const docRef = doc(db, "users", auth.currentUser.uid)
                 await updateDoc(docRef, {
@@ -62,7 +62,7 @@ export default function Profile() {
                             onChange={onChange}
                             className={`w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out mb-6 ${changeDetail && "bg-red-200 focus:bg-red-200"}`}
                         />
-                        <div className='flex justify-between whitespace-nowrap  sm:text-lg mb-6'>
+                        <div className='flex justify-between whitespace-nowrap  sm:text-base mb-6 space-x-2'>
                             <p className='flex items-center'>Do you want to change your name?
                                 <span
                                     onClick={() => {
