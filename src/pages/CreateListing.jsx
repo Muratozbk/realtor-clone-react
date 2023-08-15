@@ -12,8 +12,9 @@ export default function CreateListing() {
         description: "",
         offer: false,
         regularPrice: 0,
+        discountedPrice: 0,
     });
-    const { type, name, description, address, bedrooms, bathrooms, parking, furnished, offer, regularPrice } = formData;
+    const { type, name, description, address, bedrooms, bathrooms, parking, furnished, offer, regularPrice, discountedPrice } = formData;
     function onChange() {
 
     }
@@ -110,7 +111,7 @@ export default function CreateListing() {
                         No
                     </button>
                 </div>
-
+                {/* 1:18:35 */}
                 <div className="flex items-center mb-6">
                     <div className="">
                         <p className='text-lg font-semibold'>Regular price</p>
@@ -125,6 +126,32 @@ export default function CreateListing() {
                         </div>
                     </div>
                 </div>
+
+                {offer && (
+                    <div className="flex items-center mb-6">
+                        <div className="">
+                            <p className='text-lg font-semibold'>Discounted price</p>
+                            <div className="flex w-full justify-center items-center space-x-6">
+                                <input type="number" id='regularPrice'
+                                    value={discountedPrice}
+                                    onChange={onChange} min={"50"} max={"999999999"} required={offer}
+                                    className='w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white focus:border-slate-600 text-center' />
+                                {type === 'rent' && (
+                                    <p className='text-md w-full whitespace-nowrap'>$ / Month</p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+                <div className="mb-6 ">
+                    <p className='text-lg font-semibold'>Images</p>
+                    <p className='text-gray-600 '>The first image will be cover (max 6)</p>
+                    <input type="file" id="images"
+                        onChange={onChange}
+                        accept='.jpg, .png, .jpg' multiple required
+                        className='w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:bg-white focus:border-slate-600' />
+                </div>
+                <button type="submit" className='w-full mb-6 px-7 py-3 bg-blue-600 text-white font-medium text-sm uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg active:bg-800 active:shadow-lg transition duration-150 ease-in-out'>Create Listing</button>
             </form>
         </main>
     )
