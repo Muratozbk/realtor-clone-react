@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import Spinner from '../components/Spinner'
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
+import { getAuth } from 'firebase/auth'
+import { v4 as uuidv4 } from 'uuid'
 
 export default function CreateListing() {
+    const auth = getAuth()
     const [geolocationEnabled, setGeolocationEnabled] = useState(true)
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({
@@ -63,15 +67,68 @@ export default function CreateListing() {
         if (geolocationEnabled) {
             const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GEOCODE_API_KEY}`);
             const data = await response.json();
-            console.log(data)
-        }
+            console.log(data);
+            geolocation.lat = data.result[0]?.geometry.location.lat ?? 0;
+            geolocation.lng = data.result[0]?.geometry.location.lng ?? 0;
 
+            location = data.status === "ZERO_RESULT" && undefined;
+            if (location === undefined) {
+                setLoading(false);
+                toast.error("Please enter a correct address")
+            }
+        } else {
+            geolocation.lat = latitude
+            geolocation.lng = longitude
+        }
+    };
+    async function storeImage(image) {
+        return new Promise((resolve, reject) => {
+            const storage = getStorage()
+            const filename = `${auth.currentUser.uid}-${image.name}-${uuidv4()}`
+            const storageRef = ref(storage, filename)
+            const uploadTask = uploadBytesResumable(storageRef, image)
+
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    const progress =
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log("upload is" + progress + "% done");
+                    switch (snapshot.state) {
+                        case "paused":
+                            console.log("paused")
+                            break;
+                        case "running":
+                            console.log("upload is running")
+                            break;
+                    }
+                },
+                (error) => {
+                    reject(error)
+                },
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        resolve(downloadURL)
+                    })
+                }
+            )
+        })
+    }
+    async function imgUrls() {
+        await Promise.all(
+            [...images]
+                .map((image) => storeImage(image))
+                .catch((error) => {
+                    setLoading(false);
+                    toast.error("Images not uploaded")
+                    return;
+                }))
     }
 
     if (loading) {
         return <Spinner />
     }
-
+    // 1:26
     return (
         <main className='max-w-md px-2 mx-auto '>
             <h1 className='text-3xl text-center mt-6 font-bold'>
