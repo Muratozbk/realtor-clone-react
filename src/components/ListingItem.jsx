@@ -5,14 +5,18 @@ import { MdLocationOn } from 'react-icons/md'
 
 export default function ListingItem({ listing, id }) {
     return (
-        <li>
+        <li className='relative bg-white flex flex-col justify-between items-center shadow-md hover:shadow-xl rounded-md overflow-hidden transition duration-150 ease-in-out'>
             <Link to={`/category/${listing.type}/${id}`}>
-                <img src={listing.imgUrls[0]} alt="" />
+                <img className='h-[170px] w-full object-cover hover:scale-110 transition duration-200 ease-in-out'
+                    loading='lazy'
+                    src={listing.imgUrls[0]} alt="listing" />
             </Link>
-            <Moment fromNow>
+            <Moment fromNow
+                className='absolute top-2 left-2 bg-[#3377cc] text-white uppercase font-semibold rounded-md px-2 py-1 shadow-lg'>
                 {listing.timestamp?.toDate()}
-            </Moment>
-            <div className="">
+            </Moment >
+            <div className="w-full">
+                {/* 34:00 */}
                 <div className="">
                     <MdLocationOn />
                     <p>{listing.address} </p>
