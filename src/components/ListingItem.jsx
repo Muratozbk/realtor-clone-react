@@ -49,7 +49,7 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
             {onEdit && (
                 <MdEdit className=' absolute bottom-2 right-7 h-4 cursor-pointer text-black'
                     onClick={() => onEdit(listing.id)} />
-                // 11:45 v9
+
             )}
         </li>
     )

@@ -80,27 +80,19 @@ export default function Profile() {
         fetchUserListings();
     }, [auth.currentUser.uid]);
 
-    async function onDelete() {
-
+    async function onDelete(listingID) {
+        if (window.confirm("Are you sure want to delete?")) {
+            await deleteDoc(doc(db, 'listings', listingID));
+            const updatedListings = listings.filter((listing) =>
+                listing.id !== listingID);
+            setListings(updatedListings);
+            toast.success("The listing deleted")
+        }
     }
 
-    function onEdit() {
-
+    function onEdit(listingID) {
+        navigate(`/edit-listing/${listingID}`)
     }
-    // async function onDelete(listingID) {
-    //     if (window.confirm("Are you sure you want to delete?")) {
-    //         await deleteDoc(doc(db, "listings", listingID));
-    //         const updatedListings = listings.filter(
-    //             (listing) => listing.id !== listingID
-    //         );
-    //         setListings(updatedListings);
-    //         toast.success("Successfully deleted the listing");
-    //     }
-    // }
-
-    // function onEdit(listingID) {
-    //     navigate(`/edit-listing/${listingID}`);
-    // }
 
     return (
         <>
