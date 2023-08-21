@@ -12,7 +12,7 @@ export default function Listing() {
     const [listing, setListing] = useState(null)
     const [loading, setLoading] = useState(true)
 
-    SwiperCore.use(Autoplay, Navigation, Pagination)
+    SwiperCore.use([Autoplay, Navigation, Pagination])
 
     useEffect(() => {
         async function fetchListing() {
@@ -21,7 +21,6 @@ export default function Listing() {
             if (docSnap.exists()) {
                 setListing(docSnap.data())
                 setLoading(false)
-                console.log(listing)
             }
         }
         fetchListing()
@@ -37,7 +36,7 @@ export default function Listing() {
                 modules={[EffectFade]} autoplay={{ delay: 3000 }}>
                 {listing.imgUrls.map((url, index) => (
                     <SwiperSlide key={index}>
-                        <div className='w-full overflow-hidden h-[300px]' style={{ background: `url(${listing.imgUrls[index]}) center no-repeat` }}>
+                        <div className='relative w-full overflow-hidden h-[300px]' style={{ background: `url(${listing.imgUrls[index]}) center no-repeat`, backgroundSize: 'cover' }}>
 
                         </div>
                     </SwiperSlide>
