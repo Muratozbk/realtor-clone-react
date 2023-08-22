@@ -63,7 +63,7 @@ export default function Listing() {
             )}
 
             <div className="m-4 flex flex-col md:flex-row max-w-6xl rounded-lg p-4  lg:mx-auto shadow-lg bg-white lg:space-x-5 ">
-                <div className=" w-full h-[270px] lg:h-[400px]">
+                <div className=" w-full ">
                     <p className='text-2xl font-bold mb-3 text-blue-700'>
                         {listing.name} - $ {listing.offer ? listing.discountedPrice.toString()
                             .replace(/\B(?=(d{3})+(?!\d))/g, ",") : listing.regularPrice.toString()
@@ -81,7 +81,7 @@ export default function Listing() {
                     </div>
                     <p className='mt-3 mb-3'>
                         <span className='font-semibold'>Description -</span>  {listing.description} </p>
-                    <ul className='flex items-center space-x-2 lg:space-x-8 text-sm font-semibold'>
+                    <ul className='flex items-center space-x-2 lg:space-x-8 text-sm font-semibold mb-6'>
                         <li className='flex items-center whitespace-nowrap'>
                             <FaBed className='text-lg mr-1' />
                             {+listing.bedrooms > 1 ? `${listing.bedrooms} Beds` : "1 Bed"}
@@ -109,7 +109,8 @@ export default function Listing() {
                                 </button>
                             </div>)}
                     {contactLandlord && (
-                        <Contact />
+                        <Contact userRef={listing.userRef}
+                            listing={listing} />
                     )}
 
                 </div>
