@@ -7,13 +7,16 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { EffectFade, Autoplay, Navigation, Pagination } from 'swiper';
 import "swiper/css/bundle"
 import { FaShare, FaMapMarkerAlt, FaBed, FaBath, FaParking, FaChair } from 'react-icons/fa'
+import { getAuth } from 'firebase/auth'
+import Contact from '../components/Contact';
 
 export default function Listing() {
+    const auth = getAuth()
     const params = useParams()
     const [listing, setListing] = useState(null)
     const [loading, setLoading] = useState(true)
     const [shareLinkCopied, setShareLinkCopied] = useState(false)
-
+    const [contactLandlord, setContactLandlord] = useState(false)
     SwiperCore.use([Autoplay, Navigation, Pagination])
 
     useEffect(() => {
@@ -60,7 +63,7 @@ export default function Listing() {
             )}
 
             <div className="m-4 flex flex-col md:flex-row max-w-6xl rounded-lg p-4  lg:mx-auto shadow-lg bg-white lg:space-x-5 ">
-                <div className=" w-full h-[200px] lg:h-[400px]">
+                <div className=" w-full h-[270px] lg:h-[400px]">
                     <p className='text-2xl font-bold mb-3 text-blue-700'>
                         {listing.name} - $ {listing.offer ? listing.discountedPrice.toString()
                             .replace(/\B(?=(d{3})+(?!\d))/g, ",") : listing.regularPrice.toString()
@@ -96,6 +99,19 @@ export default function Listing() {
                             {listing.furnished ? " Furnished" : "Not furnished"}
                         </li>
                     </ul>
+                    {listing.userRef !== auth.currentUser?.uid &&
+                        !contactLandlord && (
+                            <div className="mt-4 flex  items-center">
+                                <button
+                                    onClick={() => setContactLandlord(true)}
+                                    className='px-7 py-3 bg-blue-600 text-sm uppercase rounded shadow-md font-medium text-white hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg min-w-[290px] max-w-[400px] text-center transition duration-150 ease-in-out '>
+                                    Contact Landlord
+                                </button>
+                            </div>)}
+                    {contactLandlord && (
+                        <Contact />
+                    )}
+
                 </div>
                 <div className="bg-blue-300 w-full h-[200px] lg:h-[400px] z-10 overflow-x-hidden"></div>
             </div>
